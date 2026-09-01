@@ -18,7 +18,7 @@ VOID CDECL WinMainCRTStartup()
     PathRenameExtensionW(lstrcpyW(exe, mod), L".exe");
     PathRenameExtensionW(lstrcpyW(dll, mod), L".dll");
 
-    if (CompareStringOrdinal(mod, -1, exe, -1, MAX_PATH) == CSTR_EQUAL)
+    if (CompareStringOrdinal(mod, -1, exe, -1, TRUE) == CSTR_EQUAL)
         ExitProcess(EXIT_FAILURE);
 
     PROCESS_INFORMATION pi = {};
