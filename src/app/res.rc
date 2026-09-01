@@ -1,20 +1,2 @@
-#include <windows.h>
-VS_VERSION_INFO VERSIONINFO
-FILEVERSION 1, 0, 0, 1
-BEGIN
-BLOCK "StringFileInfo"
-BEGIN
-BLOCK "040904b0"
-BEGIN
-VALUE "CompanyName", "Aetopia"
-VALUE "ProductVersion",	"1.0.0.1"
-VALUE "ProductName", "Touhou 10 Borderless Loader"
-VALUE "FileDescription", "Touhou 10 Borderless Loader"
-VALUE "LegalCopyright", "https://github.com/Aetopia/th10bp"
-END
-END
-BLOCK "VarFileInfo"
-BEGIN
-VALUE "Translation", 0x0, 1252
-END
-END
+#define PRODUCTNAME "Touhou 10 Borderless Loader"
+#include "../res.rc"

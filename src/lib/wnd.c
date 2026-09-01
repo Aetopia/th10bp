@@ -2,6 +2,7 @@
 #include <windef.h>
 #include <wingdi.h>
 #include <winuser.h>
+#include <winbase.h>
 
 HWND g_hWnd = {};
 WNDPROC g_WndProc = {};
@@ -24,21 +25,19 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         RECT rc = {};
         GetClientRect(hWnd, &rc);
 
-        FLOAT cx = rc.right;
-        FLOAT cy = rc.bottom;
+        INT cx = rc.right;
+        INT cy = MulDiv(cx, 3, 4);
 
-        FLOAT parent = cx / cy;
-        FLOAT child = 4.F / 3.F;
+        if (cy > rc.bottom)
+        {
+            cy = rc.bottom;
+            cx = MulDiv(cy, 4, 3);
+        }
 
-        if (parent > child)
-            cx = cy * child + .5F;
-        else if (parent < child)
-            cy = cx / child + .5F;
+        INT x = (rc.right - cx) / 2;
+        INT y = (rc.bottom - cy) / 2;
 
-        FLOAT x = (rc.right - cx) / 2;
-        FLOAT y = (rc.bottom - cy) / 2;
-
-        SetWindowPos(g_hWnd, HWND_TOP, x, y, cx, cy, SWP_NOZORDER);
+        SetWindowPos(g_hWnd, NULL, x, y, cx, cy, SWP_NOZORDER);
         break;
     }
     }
@@ -60,7 +59,7 @@ LRESULT WINAPI FullScreenWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
         INT cx = mi.rcMonitor.right - x;
         INT cy = mi.rcMonitor.bottom - y;
 
-        SetWindowPos(hWnd, HWND_TOP, x, y, cx, cy, SWP_NOZORDER);
+        SetWindowPos(hWnd, NULL, x, y, cx, cy, SWP_NOZORDER);
     }
     }
     return WndProc(hWnd, uMsg, wParam, lParam);
