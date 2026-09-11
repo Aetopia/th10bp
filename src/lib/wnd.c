@@ -4,7 +4,7 @@
 #include <winuser.h>
 #include <winbase.h>
 
-HWND g_hWnd = {};
+HWND g_Wnd = {};
 WNDPROC g_WndProc = {};
 
 LRESULT WINAPI WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -37,7 +37,7 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         INT x = (rc.right - cx) / 2;
         INT y = (rc.bottom - cy) / 2;
 
-        SetWindowPos(g_hWnd, NULL, x, y, cx, cy, SWP_NOZORDER);
+        SetWindowPos(g_Wnd, NULL, x, y, cx, cy, SWP_NOZORDER);
         break;
     }
     }

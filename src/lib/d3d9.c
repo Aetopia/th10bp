@@ -1,7 +1,7 @@
 #pragma once
 #include "wnd.c"
 #include <d3d9.h>
-#include <minhook.h>
+#include <MinHook.h>
 #include <stdatomic.h>
 
 HRESULT WINAPI (*g_Reset)(PVOID, PVOID) = {};
@@ -10,7 +10,7 @@ HRESULT WINAPI (*g_CreateDevice)(PVOID, UINT, D3DDEVTYPE, HWND, DWORD, PVOID, PV
 
 HRESULT WINAPI Present(PVOID this, PVOID src, PVOID dst, HWND wnd, PVOID rgn)
 {
-    return g_Present(this, src, dst, g_hWnd, rgn);
+    return g_Present(this, src, dst, g_Wnd, rgn);
 }
 
 HRESULT WINAPI Reset(PVOID this, D3DPRESENT_PARAMETERS *params)
@@ -56,7 +56,7 @@ HRESULT WINAPI CreateDevice(PVOID this, UINT adapter, D3DDEVTYPE type, HWND wnd,
             .hbrBackground = GetStockObject(BLACK_BRUSH),
         }));
 
-        g_hWnd = CreateWindowExA(WS_EX_LEFT, atom, NULL, WS_VISIBLE | WS_CHILD, 0, 0, 0, 0, wnd, NULL, NULL, NULL);
+        g_Wnd = CreateWindowExA(WS_EX_LEFT, atom, NULL, WS_VISIBLE | WS_CHILD, 0, 0, 0, 0, wnd, NULL, NULL, NULL);
         g_WndProc = (PVOID)SetWindowLongPtrA(wnd, GWLP_WNDPROC, (LONG_PTR)procedure);
 
         SetWindowLongPtrA(wnd, GWL_STYLE, style);

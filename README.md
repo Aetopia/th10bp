@@ -27,44 +27,5 @@ Adds resizable window & borderless fullscreen support to Touhou 10 with aspect r
 > - If using [`thcrap`](https://github.com/thpatch/thcrap), edit `games.js`.
 
 ## Build
-1. Install & update [MSYS2](https://www.msys2.org):
-
-    ```bash
-    pacman -Syu --noconfirm
-    ```
-
-2. Install [GCC x86](https://gcc.gnu.org):
-
-    ```bash
-    pacman -Syu mingw-w64-i686-gcc --noconfirm
-    ```
-3. Install [MinHook](https://github.com/TsudaKageyu/minhook):
-
-    **You must manually build MinHook for `x86`.**
-    - [Download](https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-MinHook/PKGBUILD) MinHook's `PKGBUILD` file.
-
-    - Open the file & add support for `MINGW32`:
-      ```diff
-      -mingw_arch=(...)
-      +mingw_arch=('mingw32')
-      ```
-
-    - Open a MSYS2 terminal & run:
-
-      ```bash
-      pacman -S --needed base-devel --noconfirm
-      ```
-    
-    - Now build the package using:
-      
-      ```bash
-      makepkg-mingw --cleanbuild --syncdeps --force --noconfirm
-      ```
-
-    - Install the package using:
-       
-      ```bash
-      pacman -U *.pkg.tar.zst
-      ```
-
-4. Start MSYS2's `MINGW32` environment & run `BUILD.cmd`.
+1. Install [CMake](https://cmake.org/) & [MinGW (x86)](https://www.mingw-w64.org).
+2. Run `BUILD.cmd` to build & package.

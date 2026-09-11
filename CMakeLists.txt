@@ -1,0 +1,30 @@
+cmake_minimum_required(VERSION 3.10)
+project(th10bp LANGUAGES C)
+
+set(CMAKE_STANDARD_LIBRARIES "")
+set(CMAKE_EXE_LINKER_FLAGS_INIT "")
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/bin")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/obj")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/obj")
+
+include(FetchContent)
+FetchContent_Declare(minhook GIT_REPOSITORY https://github.com/TsudaKageyu/minhook.git GIT_TAG v1.3.4)
+FetchContent_MakeAvailable(minhook)
+
+add_compile_options(-O3)
+add_compile_definitions(INITGUID WIN32_LEAN_AND_MEAN WINVER=NTDDI_WIN10)
+add_link_options(-Wl,--gc-sections,--exclude-all-symbols,--wrap=memcpy,--wrap=memset -nostdlib -s)
+
+add_library(lib SHARED "src/lib/main.c" "src/lib/res.rc")
+add_executable(app WIN32 "src/app/main.c" "src/app/res.rc")
+
+target_link_options(app PRIVATE -mwindows)
+target_link_options(lib PRIVATE -e DllMain)
+
+set_target_properties(lib PROPERTIES PREFIX "" OUTPUT_NAME "th10" SUFFIX ".dll")
+set_target_properties(app PROPERTIES PREFIX "" OUTPUT_NAME "th10" SUFFIX ".com")
+
+target_link_libraries(app PRIVATE kernel32 shlwapi)
+target_link_libraries(lib PRIVATE minhook kernel32 d3d9 dinput8 user32 gdi32 dwmapi)
