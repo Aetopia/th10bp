@@ -13,9 +13,9 @@ include(FetchContent)
 FetchContent_Declare(minhook GIT_REPOSITORY https://github.com/TsudaKageyu/minhook.git GIT_TAG v1.3.4)
 FetchContent_MakeAvailable(minhook)
 
-add_compile_options(-O3)
+add_compile_options(-O3 -Wno-dll-attribute-on-redeclaration)
 add_compile_definitions(INITGUID WIN32_LEAN_AND_MEAN WINVER=NTDDI_WIN10)
-add_link_options(-Wl,--gc-sections,--exclude-all-symbols,--wrap=memcpy,--wrap=memset -nostdlib -s)
+add_link_options(-Wl,--kill-at,--gc-sections,--exclude-all-symbols,--wrap=memcpy,--wrap=memset -nostdlib -s)
 
 add_library(lib SHARED "src/lib/main.c" "src/lib/res.rc")
 add_executable(app WIN32 "src/app/main.c" "src/app/res.rc")
@@ -27,4 +27,4 @@ set_target_properties(lib PROPERTIES PREFIX "" OUTPUT_NAME "th10" SUFFIX ".dll")
 set_target_properties(app PROPERTIES PREFIX "" OUTPUT_NAME "th10" SUFFIX ".com")
 
 target_link_libraries(app PRIVATE kernel32 shlwapi)
-target_link_libraries(lib PRIVATE minhook kernel32 d3d9 dinput8 user32 gdi32 dwmapi)
+target_link_libraries(lib PRIVATE minhook kernel32 d3d9 user32 gdi32 dwmapi shlwapi)

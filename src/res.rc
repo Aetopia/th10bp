@@ -1,6 +1,6 @@
 #include <winver.h>
 VS_VERSION_INFO VERSIONINFO
-FILEVERSION 1, 0, 1, 0
+FILEVERSION 2, 0, 0, 0
 {
     BLOCK "StringFileInfo"
     {
@@ -9,7 +9,7 @@ FILEVERSION 1, 0, 1, 0
             VALUE "ProductName", PRODUCTNAME
             VALUE "FileDescription", PRODUCTNAME
             VALUE "CompanyName", "Aetopia"
-            VALUE "ProductVersion", "1.0.1.0"
+            VALUE "ProductVersion", "2.0.0.0"
             VALUE "LegalCopyright", "https://github.com/Aetopia/th10bp"
         }
     }

@@ -1,7 +1,7 @@
 #include "d3d9.c"
+#include "dinput8.c"
 #include <dwmapi.h>
-#include <dinput.h>
-#include <dinputd.h>
+#include <shlwapi.h>
 
 PVOID CDECL __wrap_memcpy(PVOID dst, PVOID src, SIZE_T count)
 {
@@ -15,20 +15,19 @@ PVOID CDECL __wrap_memset(PVOID dst, BYTE data, SIZE_T count)
     return dst;
 }
 
-HRESULT WINAPI (*g_SetCooperativeLevel)(PVOID, HWND, DWORD) = {};
-
-HRESULT WINAPI SetCooperativeLevel(PVOID this, HWND wnd, DWORD flags)
-{
-    flags &= ~DISCL_NOWINKEY;
-    return g_SetCooperativeLevel(this, wnd, flags);
-}
-
 BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, PVOID reserved)
 {
     if (reason == DLL_PROCESS_ATTACH)
     {
         DisableThreadLibraryCalls(instance);
         SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+
+        WCHAR path[MAX_PATH] = {};
+
+        GetSystemDirectoryW(path, MAX_PATH);
+        PathCombineW(path, path, L"DINPUT8");
+
+        g_DirectInput8Create = (PVOID)GetProcAddress(LoadLibraryW(path), "DirectInput8Create");
 
         LPDIRECTINPUT8A dinput = {};
         LPDIRECTINPUTDEVICE8A device = {};
