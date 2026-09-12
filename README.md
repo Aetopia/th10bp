@@ -18,14 +18,10 @@ Adds resizable window & borderless fullscreen support to Touhou 10 with aspect r
 
 ## Usage
 
-- [Download](https://github.com/Aetopia/th10bp/releases/latest/download/th10bp.zip) the latest release of `th10bp` & extract the archive.
-- Find where your copy of Touhou 10 is located on your system.
-- Place `th10.com` & `th10.dll` in the game's install directory.
-
-> [!TIP]
-> To use the patch, you must launch `th10.com`:
-> - If using [`thcrap`](https://github.com/thpatch/thcrap), edit `games.js`.
+- [Download](https://github.com/Aetopia/th10bp/releases/latest) the latest release of `th10bp`.
+- Locate a copy of Touhou 10 on your system.
+- Place `dinput8.dll` in the game's install directory.
 
 ## Build
-1. Install [CMake](https://cmake.org/) & [MinGW (x86)](https://www.mingw-w64.org).
-2. Run `BUILD.cmd` to build & package.
+1. Install [CMake](https://cmake.org) & [MinGW (x86)](https://www.mingw-w64.org).
+2. Run [`BUILD.cmd`](BUILD.cmd) to build the project.
