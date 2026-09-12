@@ -1,5 +1,5 @@
 #include "d3d9.c"
-#include "dinput8.c"
+#include "dinput.c"
 #include <dwmapi.h>
 #include <shlwapi.h>
 

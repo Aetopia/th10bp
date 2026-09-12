@@ -8,5 +8,3 @@ set "CMAKE_GENERATOR=MinGW Makefiles"
 
 cmake.exe -S "." -B "src/obj" --fresh
 cmake.exe --build "src/obj" --clean-first
-
-powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command "$ProgressPreference = 'SilentlyContinue'; Compress-Archive -Path 'src\bin\*' -DestinationPath 'src\bin\th10bp.zip' -Force"

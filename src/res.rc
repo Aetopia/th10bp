@@ -6,10 +6,10 @@ FILEVERSION 2, 0, 0, 0
     {
         BLOCK "000004B0"
         {
-            VALUE "ProductName", PRODUCTNAME
-            VALUE "FileDescription", PRODUCTNAME
             VALUE "CompanyName", "Aetopia"
             VALUE "ProductVersion", "2.0.0.0"
+            VALUE "ProductName", "Touhou 10 Borderless Patch"
+            VALUE "FileDescription", "Touhou 10 Borderless Patch"
             VALUE "LegalCopyright", "https://github.com/Aetopia/th10bp"
         }
     }
