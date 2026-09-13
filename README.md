@@ -1,6 +1,10 @@
-# Touhou 10 Borderless Patch (th10bp)
+# Touhou Borderless Patch
 
-Adds resizable window & borderless fullscreen support to Touhou 10 with aspect ratio preservation.
+Adds resizable window & borderless fullscreen support to Touhou games with aspect ratio preservation.
+
+## Games
+
+- Touhou 10
 
 ## Showcase
 
@@ -18,9 +22,9 @@ Adds resizable window & borderless fullscreen support to Touhou 10 with aspect r
 
 ## Usage
 
-- [Download](https://github.com/Aetopia/th10bp/releases/latest) the latest release of `th10bp`.
-- Locate a copy of Touhou 10 on your system.
-- Place `dinput8.dll` in the game's install directory.
+- [Download](https://github.com/Aetopia/thbp/releases/latest) the latest release of `thbp`.
+- Locate a supported game on your system.
+- Place `dinput8.dll` in the install directory.
 
 ## Build
 1. Install [CMake](https://cmake.org) & [MinGW (x86)](https://www.mingw-w64.org).
