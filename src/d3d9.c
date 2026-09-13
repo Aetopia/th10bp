@@ -4,12 +4,20 @@
 #include <MinHook.h>
 #include <stdatomic.h>
 
+HRESULT WINAPI (*g_Reset)(PVOID, PVOID) = {};
 HRESULT WINAPI (*g_Present)(PVOID, PVOID, PVOID, HWND, PVOID) = {};
 HRESULT WINAPI (*g_CreateDevice)(PVOID, UINT, D3DDEVTYPE, HWND, DWORD, PVOID, PVOID) = {};
 
-HRESULT WINAPI Reset(PVOID this, PVOID params)
+HRESULT WINAPI Reset(PVOID this, D3DPRESENT_PARAMETERS *params)
 {
-    return D3D_OK;
+    D3DPRESENT_PARAMETERS d3dpp = *params;
+
+    d3dpp.Windowed = TRUE;
+    d3dpp.FullScreen_RefreshRateInHz = 0;
+    d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
+    d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_ONE;
+
+    return g_Reset(this, &d3dpp);
 }
 
 HRESULT WINAPI Present(PVOID this, PVOID src, PVOID dst, HWND wnd, PVOID rgn)
@@ -30,6 +38,7 @@ HRESULT WINAPI CreateDevice(PVOID this, UINT adapter, D3DDEVTYPE type, HWND wnd,
         style |= WS_VISIBLE;
 
     d3dpp.Windowed = TRUE;
+    d3dpp.FullScreen_RefreshRateInHz = 0;
     d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
     d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_ONE;
 
@@ -38,7 +47,7 @@ HRESULT WINAPI CreateDevice(PVOID this, UINT adapter, D3DDEVTYPE type, HWND wnd,
 
     if (SUCCEEDED(hr) && !atomic_flag_test_and_set(&s_flag))
     {
-        MH_CreateHook((*device)->lpVtbl->Reset, Reset, NULL);
+        MH_CreateHook((*device)->lpVtbl->Reset, Reset, (PVOID)&g_Reset);
         MH_CreateHook((*device)->lpVtbl->Present, Present, (PVOID)&g_Present);
 
         MH_QueueEnableHook((*device)->lpVtbl->Reset);
