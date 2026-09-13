@@ -5,6 +5,7 @@ Adds resizable window & borderless fullscreen support to Touhou games with aspec
 ## Games
 
 - Touhou 10
+- Touhou 12
 
 ## Showcase
 
