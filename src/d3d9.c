@@ -20,7 +20,7 @@ HRESULT WINAPI Present(PVOID this, PVOID src, PVOID dst, HWND wnd, PVOID rgn)
 HRESULT WINAPI CreateDevice(PVOID this, UINT adapter, D3DDEVTYPE type, HWND wnd, DWORD flags,
                             D3DPRESENT_PARAMETERS *params, LPDIRECT3DDEVICE9 *device)
 {
-    static atomic_flag flag = {};
+    static atomic_flag s_flag = {};
 
     D3DPRESENT_PARAMETERS d3dpp = *params;
     DWORD style = d3dpp.Windowed ? WS_OVERLAPPEDWINDOW : WS_POPUP;
@@ -34,9 +34,9 @@ HRESULT WINAPI CreateDevice(PVOID this, UINT adapter, D3DDEVTYPE type, HWND wnd,
     d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_ONE;
 
     flags |= D3DCREATE_NOWINDOWCHANGES;
-    HRESULT result = g_CreateDevice(this, adapter, type, wnd, flags, &d3dpp, device);
+    HRESULT hr = g_CreateDevice(this, adapter, type, wnd, flags, &d3dpp, device);
 
-    if (SUCCEEDED(result) && !atomic_flag_test_and_set(&flag))
+    if (SUCCEEDED(hr) && !atomic_flag_test_and_set(&s_flag))
     {
         MH_CreateHook((*device)->lpVtbl->Reset, Reset, NULL);
         MH_CreateHook((*device)->lpVtbl->Present, Present, (PVOID)&g_Present);
@@ -61,5 +61,5 @@ HRESULT WINAPI CreateDevice(PVOID this, UINT adapter, D3DDEVTYPE type, HWND wnd,
         SetWindowPos(wnd, NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
     }
 
-    return result;
+    return hr;
 }
