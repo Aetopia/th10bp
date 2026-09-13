@@ -38,7 +38,7 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         INT y = (rc.bottom - cy) / 2;
 
         SetWindowPos(g_Wnd, NULL, x, y, cx, cy, SWP_NOZORDER);
-        break;
+        return 0;
     }
     }
     return CallWindowProcA(g_WndProc, hWnd, uMsg, wParam, lParam);
