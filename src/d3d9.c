@@ -54,18 +54,18 @@ HRESULT WINAPI CreateDevice(PVOID this, UINT adapter, D3DDEVTYPE type, HWND wnd,
         MH_QueueEnableHook((*device)->lpVtbl->Present);
         MH_ApplyQueued();
 
-        PSTR atom = MAKEINTATOM(RegisterClassA(&(WNDCLASSA){
-            .lpszClassName = "PRESENT",
-            .lpfnWndProc = DefWindowProcA,
-            .hCursor = LoadCursorA(NULL, IDC_ARROW),
+        PWSTR atom = MAKEINTATOM(RegisterClassW(&(WNDCLASSW){
+            .lpszClassName = L"PRESENT",
+            .lpfnWndProc = DefWindowProcW,
+            .hCursor = LoadCursorW(NULL, IDC_ARROW),
             .hbrBackground = GetStockObject(BLACK_BRUSH),
         }));
 
-        g_Wnd = CreateWindowExA(WS_EX_LEFT, atom, NULL, WS_VISIBLE | WS_CHILD, 0, 0, 0, 0, wnd, NULL, NULL, NULL);
-        g_WndProc = (PVOID)SetWindowLongA(wnd, GWLP_WNDPROC, (LONG_PTR)procedure);
+        g_Wnd = CreateWindowExW(WS_EX_LEFT, atom, NULL, WS_VISIBLE | WS_CHILD, 0, 0, 0, 0, wnd, NULL, NULL, NULL);
+        g_WndProc = (PVOID)SetWindowLongW(wnd, GWLP_WNDPROC, (LONG_PTR)procedure);
 
-        SetWindowLongA(wnd, GWL_STYLE, style);
-        SetWindowLongA(wnd, GWL_EXSTYLE, WS_EX_APPWINDOW);
+        SetWindowLongW(wnd, GWL_STYLE, style);
+        SetWindowLongW(wnd, GWL_EXSTYLE, WS_EX_APPWINDOW);
 
         SetWindowPos(wnd, NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
     }

@@ -7,10 +7,13 @@
 HWND g_Wnd = {};
 WNDPROC g_WndProc = {};
 
-LRESULT WINAPI WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT WINAPI WindowedWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (uMsg)
     {
+    case WM_SETCURSOR: {
+        return DefWindowProcW(hWnd, uMsg, wParam, lParam);
+    }
     case WM_PAINT: {
         PAINTSTRUCT paint = {};
         BeginPaint(hWnd, &paint);
@@ -41,7 +44,7 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         return 0;
     }
     }
-    return CallWindowProcA(g_WndProc, hWnd, uMsg, wParam, lParam);
+    return CallWindowProcW(g_WndProc, hWnd, uMsg, wParam, lParam);
 }
 
 LRESULT WINAPI FullScreenWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -51,7 +54,7 @@ LRESULT WINAPI FullScreenWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
     case WM_DISPLAYCHANGE:
     case WM_WINDOWPOSCHANGED: {
         MONITORINFO mi = {.cbSize = sizeof(MONITORINFO)};
-        GetMonitorInfoA(MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST), &mi);
+        GetMonitorInfoW(MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST), &mi);
 
         INT x = mi.rcMonitor.left;
         INT y = mi.rcMonitor.top;
@@ -60,17 +63,8 @@ LRESULT WINAPI FullScreenWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
         INT cy = mi.rcMonitor.bottom - y;
 
         SetWindowPos(hWnd, NULL, x, y, cx, cy, SWP_NOZORDER);
+        break;
     }
     }
-    return WndProc(hWnd, uMsg, wParam, lParam);
-}
-
-LRESULT WINAPI WindowedWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-    switch (uMsg)
-    {
-    case WM_SETCURSOR:
-        return DefWindowProcA(hWnd, uMsg, wParam, lParam);
-    }
-    return WndProc(hWnd, uMsg, wParam, lParam);
+    return WindowedWndProc(hWnd, uMsg, wParam, lParam);
 }
