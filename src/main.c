@@ -1,4 +1,5 @@
 #include "d3d9.c"
+#include "dinput.c"
 #include <dwmapi.h>
 #include <shlwapi.h>
 
@@ -21,13 +22,33 @@ BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, PVOID reserved)
         DisableThreadLibraryCalls(instance);
         SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
 
+        WCHAR path[MAX_PATH] = {};
+
+        GetSystemDirectoryW(path, MAX_PATH);
+        PathCombineW(path, path, L"dinput8.dll");
+
+        g_DirectInput8Create = (PVOID)GetProcAddress(LoadLibraryW(path), "DirectInput8Create");
+
+        LPDIRECTINPUT8W dinput = {};
+        LPDIRECTINPUTDEVICE8W device = {};
+        LPDIRECT3D9 d3d9 = Direct3DCreate9(D3D_SDK_VERSION);
+
+        g_DirectInput8Create(instance, DIRECTINPUT_VERSION, &IID_IDirectInput8W, (PVOID)&dinput, NULL);
+        dinput->lpVtbl->CreateDevice(dinput, &GUID_SysMouseEm, &device, NULL);
+
         MH_Initialize();
 
-        LPDIRECT3D9 d3d9 = Direct3DCreate9(D3D_SDK_VERSION);
         MH_CreateHook(d3d9->lpVtbl->CreateDevice, CreateDevice, (PVOID)&g_CreateDevice);
+        MH_CreateHook(device->lpVtbl->SetCooperativeLevel, SetCooperativeLevel, (PVOID)&g_SetCooperativeLevel);
 
-        MH_EnableHook(d3d9->lpVtbl->CreateDevice);
+        MH_QueueEnableHook(d3d9->lpVtbl->CreateDevice);
+        MH_QueueEnableHook(device->lpVtbl->SetCooperativeLevel);
+
+        MH_ApplyQueued();
+
         d3d9->lpVtbl->Release(d3d9);
+        device->lpVtbl->Release(device);
+        dinput->lpVtbl->Release(dinput);
 
         DwmEnableMMCSS(TRUE);
     }

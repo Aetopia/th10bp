@@ -4,6 +4,11 @@ Adds resizable window & borderless fullscreen support to Touhou games with aspec
 
 ## Games
 
+> [!TIP]
+> This patch might work with other entires!
+> - This list shows games that are confirmed to work.
+> - Feel free to test it with other games & report back!
+
 - Touhou 10
 - Touhou 12
 
